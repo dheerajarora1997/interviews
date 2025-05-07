@@ -67,3 +67,26 @@ Components are **reusable pieces of UI**, split into:
 React handles events similarly to DOM, but uses **camelCase**:
 ```jsx
 <button onClick={handleClick}>Click Me</button>
+
+---
+
+## ⚙️ Intermediate Level
+
+### 11. What is a React Hook?
+Hooks are functions that let you **use state and other React features** in functional components (e.g., `useState`, `useEffect`).
+
+---
+
+### 12. What is `useState()`?
+A hook that allows you to **add state** to functional components.
+```jsx
+const [count, setCount] = useState(0);
+
+
+
+### 13.  What is useEffect()?
+A hook that lets you perform side effects like fetching data or setting up subscriptions.
+
+useEffect(() => {
+  fetchData();
+}, []);
