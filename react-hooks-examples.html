@@ -252,6 +252,76 @@
         );
       }
 
+      // Debounce Hook
+      function useDebounce(value, delay) {
+        const [debounced, setDebounced] = useState(value);
+
+        useEffect(() => {
+          const handler = setTimeout(() => setDebounced(value), delay);
+          return () => clearTimeout(handler);
+        }, [value, delay]);
+
+        return debounced;
+      }
+
+      // Throttle Hook
+      function useThrottle(value, limit) {
+        const [throttled, setThrottled] = useState(value);
+        const lastRan = useRef(Date.now());
+
+        useEffect(() => {
+          const handler = setTimeout(() => {
+            if (Date.now() - lastRan.current >= limit) {
+              setThrottled(value);
+              lastRan.current = Date.now();
+            }
+          }, limit - (Date.now() - lastRan.current));
+
+          return () => clearTimeout(handler);
+        }, [value, limit]);
+
+        return throttled;
+      }
+
+      /************* Examples *************/
+      function DebounceExample() {
+        const [text, setText] = useState("");
+        const debouncedText = useDebounce(text, 1000);
+
+        return (
+          <div className="example">
+            <h3>Debounce Example</h3>
+            <input
+              type="text"
+              placeholder="Type something..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <p>Immediate Value: {text}</p>
+            <p>Debounced Value (after 1s): {debouncedText}</p>
+          </div>
+        );
+      }
+
+      function ThrottleExample() {
+        const [text, setText] = useState("");
+        const throttledText = useThrottle(text, 1000);
+
+        return (
+          <div className="example">
+            <h3>Throttle Example</h3>
+            <input
+              type="text"
+              placeholder="Type quickly..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <p>Immediate Value: {text}</p>
+            <p>Throttled Value (updates every 1s): {throttledText}</p>
+          </div>
+        );
+      }
+
       /** Render all examples */
       function App() {
         return (
@@ -269,6 +339,8 @@
             <UseIdExample />
             <UseTransitionExample />
             <UseDeferredValueExample />
+            <DebounceExample />
+            <ThrottleExample />
           </div>
         );
       }
